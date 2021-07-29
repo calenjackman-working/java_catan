@@ -65,8 +65,20 @@ public class BoardTest
 		for (Node node : this.board.getNodes())
 		{
 			String message = "Node at row: " + node.getRow().toString() + " col: "
-					+ node.getRow().toString() + " has no adjacent nodes...";
+					+ node.getRow().toString() + " has no adjacent nodes";
 			Boolean condition = node.getTiles().size() > 0;
+			assertTrue(message, condition);
+		}
+	}
+
+	@Test
+	public void eachTileHasResource()
+	{
+		for (Tile tile : this.board.getTiles())
+		{
+			String message = "Tile at row: " + tile.getRow().toString() + " col: "
+					+ tile.getRow().toString() + " has no resource type";
+			Boolean condition = tile.getResourceType() != null;
 			assertTrue(message, condition);
 		}
 	}

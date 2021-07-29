@@ -2,7 +2,10 @@ package model.board;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 public class Board
 {
@@ -107,9 +110,17 @@ public class Board
 
 	private void populateTiles()
 	{
+		initializeTiles();
+		assignTilesToResource();
+	}
+
+	private void initializeTiles()
+	{
 		Integer startRow = 0;
 		Integer startCol = 3;
 		Integer tilesInRow = 3;
+		Integer tileRow = 0;
+		Integer tileCol = 0;
 
 		Boolean afterMiddleRow = false;
 
@@ -118,7 +129,7 @@ public class Board
 			Integer colCursor = startCol;
 			for (int i = 0; i < tilesInRow; i++)
 			{
-				Tile currTile = new Tile();
+				Tile currTile = new Tile(tileRow, tileCol);
 
 				currTile.addNode(this.getNode(startRow + 0, colCursor + 0));
 				currTile.addNode(this.getNode(startRow + 1, colCursor - 1));
@@ -135,9 +146,11 @@ public class Board
 				this.tiles.add(currTile);
 
 				colCursor += 2;
+				tileCol++;
 			}
 
 			startRow += 3;
+			tileRow++;
 
 			if ((startCol - 1 < 1) && (tilesInRow + 1 > 5))
 			{
@@ -154,6 +167,44 @@ public class Board
 				tilesInRow += 1;
 			}
 		} while (startRow <= 12);
+	}
+
+	private void assignTilesToResource()
+	{
+		HashMap<ResourceType, Integer> resourceAmounts = initResourceAmounts();
+		List<Integer> randomTileOrder = new ArrayList<>();
+		for (int i = 0; i < 19; i++)
+		{
+			randomTileOrder.add(i);
+		}
+
+		Collections.shuffle(randomTileOrder);
+		Set<ResourceType> resourceKeys = resourceAmounts.keySet();
+
+		for (int i = 0; i < randomTileOrder.size(); i++)
+		{
+			for (ResourceType rType : resourceKeys)
+			{
+				if (resourceAmounts.get(rType) > 0)
+				{
+					this.tiles.get(randomTileOrder.get(i)).setResourceType(rType);
+					resourceAmounts.put(rType, resourceAmounts.get(rType) - 1);
+				}
+			}
+		}
+	}
+
+	public HashMap<ResourceType, Integer> initResourceAmounts()
+	{
+		HashMap<ResourceType, Integer> temp = new HashMap<>();
+		temp.put(ResourceType.LUMBER, 4);
+		temp.put(ResourceType.GRAIN, 4);
+		temp.put(ResourceType.WOOL, 4);
+		temp.put(ResourceType.BRICK, 3);
+		temp.put(ResourceType.ORE, 3);
+		temp.put(ResourceType.NOTHING, 1);
+
+		return temp;
 	}
 
 	public List<Node> getNodes()
