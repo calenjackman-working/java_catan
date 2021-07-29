@@ -15,6 +15,7 @@ public class Node
 		this.row = row;
 		this.column = column;
 		this.adjacentNodes = new ArrayList<>();
+		this.tiles = new ArrayList<>();
 		this.settlement = false;
 	}
 
@@ -51,9 +52,7 @@ public class Node
 		}
 
 		this.adjacentNodes.add(n);
-
 		return true;
-
 	}
 
 	public Boolean removeAdjacentNode(Node n)
@@ -64,6 +63,17 @@ public class Node
 		}
 
 		this.adjacentNodes.remove(n);
+		return true;
+	}
+
+	public Boolean addTile(Tile t)
+	{
+		if (this.tiles.contains(t))
+		{
+			return false;
+		}
+
+		this.tiles.add(t);
 		return true;
 	}
 }

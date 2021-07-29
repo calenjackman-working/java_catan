@@ -6,6 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import model.board.Board;
 import model.board.Node;
+import model.board.Tile;
 
 public class BoardTest
 {
@@ -31,8 +32,41 @@ public class BoardTest
 		for (Node node : nodes)
 		{
 			String message = "Node at row: " + node.getRow().toString() + " col: "
-					+ node.getRow().toString() + " has no adjacent nodes...";
+					+ node.getRow().toString() + " has no adjacent nodes";
 			Boolean condition = node.getAdjacentNodes().size() > 0;
+			assertTrue(message, condition);
+		}
+	}
+
+	@Test
+	public void correctTileAmount()
+	{
+		String message = "Incorrect amount of tiles created";
+		Boolean condition = this.board.getTiles().size() == 19;
+		assertTrue(message, condition);
+	}
+
+	@Test
+	public void eachTileHasCorrectNodes()
+	{
+		List<Tile> boardTiles = this.board.getTiles();
+		for (Tile tile : boardTiles)
+		{
+			String message =
+					"Tile at index: " + boardTiles.indexOf(tile) + " has incorrect amount of nodes";
+			Boolean condition = tile.getNodes().size() == 6;
+			assertTrue(message, condition);
+		}
+	}
+
+	@Test
+	public void eachNodeHasATile()
+	{
+		for (Node node : this.board.getNodes())
+		{
+			String message = "Node at row: " + node.getRow().toString() + " col: "
+					+ node.getRow().toString() + " has no adjacent nodes...";
+			Boolean condition = node.getTiles().size() > 0;
 			assertTrue(message, condition);
 		}
 	}
