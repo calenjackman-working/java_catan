@@ -11,10 +11,10 @@ public class Moderator
 	private List<Player> players;
 	private Integer turnNumber;
 
-	public Moderator()
+	public Moderator(List<Player> players)
 	{
 		this.board = new Board();
-		this.players = new ArrayList<>();
+		this.players = players;
 		this.turnNumber = 0;
 
 		this.playGame();
