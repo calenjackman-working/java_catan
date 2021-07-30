@@ -11,6 +11,8 @@ public class Tile
 
 	public Tile(Integer row, Integer column)
 	{
+		this.row = row;
+		this.column = column;
 		this.nodes = new ArrayList<>();
 		this.resourceType = null;
 	}

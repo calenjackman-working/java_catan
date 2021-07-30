@@ -6,7 +6,7 @@ import javax.swing.JPanel;
 
 public class CatanWindow extends JFrame
 {
-	public static final Integer DEFAULT_WIDTH = 800;
+	public static final Integer DEFAULT_WIDTH = 1000;
 	public static final Integer DEFAULT_HEIGHT = 1000;
 	public static final String DEFAULT_TITLE = "Java Catan";
 

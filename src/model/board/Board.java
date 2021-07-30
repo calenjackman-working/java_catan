@@ -120,16 +120,17 @@ public class Board
 		Integer startCol = 3;
 		Integer tilesInRow = 3;
 		Integer tileRow = 0;
-		Integer tileCol = 0;
+		Integer tileStartCol = 2;
 
 		Boolean afterMiddleRow = false;
 
 		do
 		{
 			Integer colCursor = startCol;
+			Integer tileColCursor = tileStartCol;
 			for (int i = 0; i < tilesInRow; i++)
 			{
-				Tile currTile = new Tile(tileRow, tileCol);
+				Tile currTile = new Tile(tileRow, tileColCursor);
 
 				currTile.addNode(this.getNode(startRow + 0, colCursor + 0));
 				currTile.addNode(this.getNode(startRow + 1, colCursor - 1));
@@ -146,7 +147,7 @@ public class Board
 				this.tiles.add(currTile);
 
 				colCursor += 2;
-				tileCol++;
+				tileColCursor += 2;
 			}
 
 			startRow += 3;
@@ -160,10 +161,12 @@ public class Board
 			if (afterMiddleRow)
 			{
 				startCol += 1;
+				tileStartCol += 1;
 				tilesInRow -= 1;
 			} else
 			{
 				startCol -= 1;
+				tileStartCol -= 1;
 				tilesInRow += 1;
 			}
 		} while (startRow <= 12);
@@ -189,6 +192,7 @@ public class Board
 				{
 					this.tiles.get(randomTileOrder.get(i)).setResourceType(rType);
 					resourceAmounts.put(rType, resourceAmounts.get(rType) - 1);
+					break;
 				}
 			}
 		}

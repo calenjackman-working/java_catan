@@ -1,6 +1,7 @@
 package ui;
 
 import java.awt.Color;
+import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
@@ -90,9 +91,10 @@ public class CatanBoard extends JButton
 		}
 
 		Node topNode = tile.getNodes().get(0);
-		Double centerXDev = topNode.getColumn() * xUnits;
-		Double centerYDev = (topNode.getRow() + 2) * xUnits;
+		Double centerXDev = startCoord.getX() + (topNode.getColumn() * xUnits);
+		Double centerYDev = startCoord.getX() + ((topNode.getRow() + 2) * yUnits);
 		Point2D.Double centerOfTile = new Point2D.Double(centerXDev, centerYDev);
+		String tileResource = tile.getResourceType().name();
 
 		path.closePath();
 		g2D.setColor(tileColor);
@@ -100,8 +102,15 @@ public class CatanBoard extends JButton
 		g2D.setColor(Color.black);
 		g2D.draw(path);
 
-		g2D.drawString(tile.getResourceType().name(), (float) centerOfTile.getX(),
-				(float) centerOfTile.getY());
+		FontMetrics fMetrics = g2D.getFontMetrics(g2D.getFont());
+
+		Integer sW = fMetrics.stringWidth(tileResource);
+		Integer sH = fMetrics.getHeight();
+		Integer xlabelAdjust = sW / 2;
+		Integer yLabelAdjust = sH / 2;
+
+		g2D.drawString(tileResource, (float) centerOfTile.getX() - xlabelAdjust,
+				(float) centerOfTile.getY() + yLabelAdjust);
 	}
 
 	private HashMap<ResourceType, Color> initColorMap()
