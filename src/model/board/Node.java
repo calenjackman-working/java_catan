@@ -2,78 +2,80 @@ package model.board;
 
 import java.util.ArrayList;
 import java.util.List;
+import exceptions.IllegalSettlementAdditionException;
+import model.board.ownable.Settlement;
 
-public class Node
-{
+public class Node {
 	private Integer row, column;
 	private List<Node> adjacentNodes;
 	private List<Tile> tiles;
-	private Boolean settlement;
+	private Settlement settlement;
 
-	public Node(Integer row, Integer column)
-	{
+	public Node(Integer row, Integer column) {
 		this.row = row;
 		this.column = column;
 		this.adjacentNodes = new ArrayList<>();
 		this.tiles = new ArrayList<>();
-		this.settlement = false;
+		this.settlement = null;
 	}
 
-	public Integer getRow()
-	{
+	public Integer getRow() {
 		return row;
 	}
 
-	public Integer getColumn()
-	{
+	public Integer getColumn() {
 		return column;
 	}
 
-	public Boolean getSettlement()
-	{
+	public Settlement getSettlement() {
 		return settlement;
 	}
 
-	public List<Tile> getTiles()
-	{
+	public void setSettlement(Settlement settlement) throws IllegalSettlementAdditionException {
+		if (this.settlement != null) {
+			throw new IllegalSettlementAdditionException("This node is already assigned a settlement with "
+					+ settlement.getOwner().toString() + " as the owner");
+		} else {
+			this.settlement = settlement;
+		}
+	}
+
+	public List<Tile> getTiles() {
 		return tiles;
 	}
 
-	public List<Node> getAdjacentNodes()
-	{
+	public List<Node> getAdjacentNodes() {
 		return adjacentNodes;
 	}
 
-	public Boolean addAdjacentNode(Node n)
-	{
-		if (this.adjacentNodes.contains(n))
-		{
-			return false;
+	public void addAdjacentNode(Node n) {
+		if (this.adjacentNodes.contains(n)) {
+			return;
 		}
 
 		this.adjacentNodes.add(n);
-		return true;
 	}
 
-	public Boolean removeAdjacentNode(Node n)
-	{
-		if (!(this.adjacentNodes.contains(n)))
-		{
-			return false;
+	public void removeAdjacentNode(Node n) {
+		if (!(this.adjacentNodes.contains(n))) {
+			return;
 		}
 
 		this.adjacentNodes.remove(n);
-		return true;
 	}
 
-	public Boolean addTile(Tile t)
-	{
-		if (this.tiles.contains(t))
-		{
+	public Boolean addTile(Tile t) {
+		if (this.tiles.contains(t)) {
 			return false;
 		}
 
 		this.tiles.add(t);
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		String msg = "Node @ Row: " + getRow() + " Col: " + getColumn();
+		return msg;
 	}
 }

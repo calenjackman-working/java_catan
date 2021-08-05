@@ -6,14 +6,13 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+import model.enums.ResourceType;
 
-public class Board
-{
+public class Board {
 	private List<Node> nodes;
 	private List<Tile> tiles;
 
-	public Board()
-	{
+	public Board() {
 		this.nodes = new ArrayList<>();
 		this.tiles = new ArrayList<>();
 
@@ -21,14 +20,12 @@ public class Board
 		populateTiles();
 	}
 
-	private void populateNodes()
-	{
+	private void populateNodes() {
 		initializeNodes();
 		assignNodeChildren();
 	}
 
-	private void initializeNodes()
-	{
+	private void initializeNodes() {
 		Integer currentRow = 0;
 		Integer startCol = 3;
 		Integer nodesInRow = 3;
@@ -37,53 +34,42 @@ public class Board
 		Boolean afterMiddleRow = false;
 		Boolean emptyRow = false;
 
-		do
-		{
+		do {
 			Integer colCursor = startCol;
-			if (!(emptyRow))
-			{
-				for (int i = 0; i < nodesInRow; i++)
-				{
+			if (!(emptyRow)) {
+				for (int i = 0; i < nodesInRow; i++) {
 					this.nodes.add(new Node(currentRow, colCursor));
 					colCursor += 2;
 				}
 
 				innerRowCounter++;
-			} else
-			{
+			} else {
 				emptyRow = false;
 				innerRowCounter = 0;
 			}
 
 			currentRow++;
 
-			if ((startCol - 1 < 0) && (nodesInRow + 1 > 6))
-			{
+			if ((startCol - 1 < 0) && (nodesInRow + 1 > 6)) {
 				afterMiddleRow = true;
 			}
 
-			if (innerRowCounter == 1)
-			{
-				if (afterMiddleRow)
-				{
+			if (innerRowCounter == 1) {
+				if (afterMiddleRow) {
 					startCol++;
 					nodesInRow--;
-				} else
-				{
+				} else {
 					startCol--;
 					nodesInRow++;
 				}
-			} else if (innerRowCounter == 2)
-			{
+			} else if (innerRowCounter == 2) {
 				emptyRow = true;
 			}
 		} while (currentRow < 17);
 	}
 
-	private void assignNodeChildren()
-	{
-		for (Node node : this.nodes)
-		{
+	private void assignNodeChildren() {
+		for (Node node : this.nodes) {
 			Integer nodeRow = node.getRow();
 			Integer nodeCol = node.getColumn();
 
@@ -95,27 +81,22 @@ public class Board
 			Node botRight = getNode(nodeRow + 1, nodeCol + 1);
 
 			List<Node> possibleAdjacentNodes = new ArrayList<>();
-			possibleAdjacentNodes
-					.addAll(Arrays.asList(above, below, topLeft, topRight, botLeft, botRight));
+			possibleAdjacentNodes.addAll(Arrays.asList(above, below, topLeft, topRight, botLeft, botRight));
 
-			for (Node pNode : possibleAdjacentNodes)
-			{
-				if (!(pNode == null))
-				{
+			for (Node pNode : possibleAdjacentNodes) {
+				if (!(pNode == null)) {
 					node.addAdjacentNode(pNode);
 				}
 			}
 		}
 	}
 
-	private void populateTiles()
-	{
+	private void populateTiles() {
 		initializeTiles();
 		assignTilesToResource();
 	}
 
-	private void initializeTiles()
-	{
+	private void initializeTiles() {
 		Integer startRow = 0;
 		Integer startCol = 3;
 		Integer tilesInRow = 3;
@@ -124,12 +105,10 @@ public class Board
 
 		Boolean afterMiddleRow = false;
 
-		do
-		{
+		do {
 			Integer colCursor = startCol;
 			Integer tileColCursor = tileStartCol;
-			for (int i = 0; i < tilesInRow; i++)
-			{
+			for (int i = 0; i < tilesInRow; i++) {
 				Tile currTile = new Tile(tileRow, tileColCursor);
 
 				currTile.addNode(this.getNode(startRow + 0, colCursor + 0));
@@ -139,8 +118,7 @@ public class Board
 				currTile.addNode(this.getNode(startRow + 3, colCursor + 1));
 				currTile.addNode(this.getNode(startRow + 1, colCursor + 1));
 
-				for (Node node : currTile.getNodes())
-				{
+				for (Node node : currTile.getNodes()) {
 					node.addTile(currTile);
 				}
 
@@ -153,18 +131,15 @@ public class Board
 			startRow += 3;
 			tileRow++;
 
-			if ((startCol - 1 < 1) && (tilesInRow + 1 > 5))
-			{
+			if ((startCol - 1 < 1) && (tilesInRow + 1 > 5)) {
 				afterMiddleRow = true;
 			}
 
-			if (afterMiddleRow)
-			{
+			if (afterMiddleRow) {
 				startCol += 1;
 				tileStartCol += 1;
 				tilesInRow -= 1;
-			} else
-			{
+			} else {
 				startCol -= 1;
 				tileStartCol -= 1;
 				tilesInRow += 1;
@@ -172,24 +147,19 @@ public class Board
 		} while (startRow <= 12);
 	}
 
-	private void assignTilesToResource()
-	{
+	private void assignTilesToResource() {
 		HashMap<ResourceType, Integer> resourceAmounts = initResourceAmounts();
 		List<Integer> randomTileOrder = new ArrayList<>();
-		for (int i = 0; i < 19; i++)
-		{
+		for (int i = 0; i < 19; i++) {
 			randomTileOrder.add(i);
 		}
 
 		Collections.shuffle(randomTileOrder);
 		Set<ResourceType> resourceKeys = resourceAmounts.keySet();
 
-		for (int i = 0; i < randomTileOrder.size(); i++)
-		{
-			for (ResourceType rType : resourceKeys)
-			{
-				if (resourceAmounts.get(rType) > 0)
-				{
+		for (int i = 0; i < randomTileOrder.size(); i++) {
+			for (ResourceType rType : resourceKeys) {
+				if (resourceAmounts.get(rType) > 0) {
 					this.tiles.get(randomTileOrder.get(i)).setResourceType(rType);
 					resourceAmounts.put(rType, resourceAmounts.get(rType) - 1);
 					break;
@@ -198,8 +168,7 @@ public class Board
 		}
 	}
 
-	public HashMap<ResourceType, Integer> initResourceAmounts()
-	{
+	public HashMap<ResourceType, Integer> initResourceAmounts() {
 		HashMap<ResourceType, Integer> temp = new HashMap<>();
 		temp.put(ResourceType.LUMBER, 4);
 		temp.put(ResourceType.GRAIN, 4);
@@ -211,36 +180,28 @@ public class Board
 		return temp;
 	}
 
-	public List<Node> getNodes()
-	{
+	public List<Node> getNodes() {
 		return nodes;
 	}
 
-	public Node getNode(Integer row, Integer column)
-	{
-		for (Node node : this.nodes)
-		{
-			if ((node.getRow() == row) && (node.getColumn() == column))
-			{
+	public Node getNode(Integer row, Integer column) {
+		for (Node node : this.nodes) {
+			if ((node.getRow() == row) && (node.getColumn() == column)) {
 				return node;
 			}
 		}
 		return null;
 	}
 
-	public Node getNode(Integer index)
-	{
-		try
-		{
+	public Node getNode(Integer index) throws IndexOutOfBoundsException {
+		try {
 			return this.nodes.get(index);
-		} catch (IndexOutOfBoundsException exception)
-		{
-			return null;
+		} catch (IndexOutOfBoundsException exception) {
+			throw exception;
 		}
 	}
 
-	public List<Tile> getTiles()
-	{
+	public List<Tile> getTiles() {
 		return tiles;
 	}
 }
