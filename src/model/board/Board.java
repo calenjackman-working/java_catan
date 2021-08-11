@@ -98,7 +98,7 @@ public class Board {
 	private void populateTiles() {
 		initializeTiles();
 		assignResources();
-		assignRollNumber();
+		assignRollNumbers();
 	}
 
 	private void initializeTiles() {
@@ -153,7 +153,14 @@ public class Board {
 	}
 
 	private void assignResources() {
-		HashMap<ResourceType, Integer> resourceAmounts = initResourceAmounts();
+		HashMap<ResourceType, Integer> resourceAmounts = new HashMap<>();
+		resourceAmounts.put(ResourceType.LUMBER, 4);
+		resourceAmounts.put(ResourceType.GRAIN, 4);
+		resourceAmounts.put(ResourceType.WOOL, 4);
+		resourceAmounts.put(ResourceType.BRICK, 3);
+		resourceAmounts.put(ResourceType.ORE, 3);
+		resourceAmounts.put(ResourceType.NOTHING, 1);
+
 		List<Integer> randomTileOrder = new ArrayList<>();
 		for (int i = 0; i < 19; i++) {
 			randomTileOrder.add(i);
@@ -162,6 +169,8 @@ public class Board {
 		Collections.shuffle(randomTileOrder);
 		Set<ResourceType> resourceKeys = resourceAmounts.keySet();
 
+		// TODO - make loop more efficient
+		// don't need to loop through resourceKeys that have already been assigned
 		for (int i = 0; i < randomTileOrder.size(); i++) {
 			for (ResourceType rType : resourceKeys) {
 				if (resourceAmounts.get(rType) > 0) {
@@ -173,20 +182,44 @@ public class Board {
 		}
 	}
 
-	private HashMap<ResourceType, Integer> initResourceAmounts() {
-		HashMap<ResourceType, Integer> temp = new HashMap<>();
-		temp.put(ResourceType.LUMBER, 4);
-		temp.put(ResourceType.GRAIN, 4);
-		temp.put(ResourceType.WOOL, 4);
-		temp.put(ResourceType.BRICK, 3);
-		temp.put(ResourceType.ORE, 3);
-		temp.put(ResourceType.NOTHING, 1);
+	private void assignRollNumbers() {
+		HashMap<Integer, Integer> rollFreqs = new HashMap<>();
+		rollFreqs.put(2, 1);
+		rollFreqs.put(3, 2);
+		rollFreqs.put(4, 2);
+		rollFreqs.put(5, 2);
+		rollFreqs.put(6, 2);
+		rollFreqs.put(8, 2);
+		rollFreqs.put(9, 2);
+		rollFreqs.put(10, 2);
+		rollFreqs.put(11, 2);
+		rollFreqs.put(12, 1);
 
-		return temp;
-	}
+		List<Integer> randomTileOrder = new ArrayList<>();
+		for (int i = 0; i < 19; i++) {
+			randomTileOrder.add(i);
+		}
 
-	private void assignRollNumber() {
-		return;
+		Collections.shuffle(randomTileOrder);
+		Set<Integer> rollValues = rollFreqs.keySet();
+
+		// TODO - make loop more efficient
+		// don't need to loop through rollValues that have already been assigned
+		for (int i = 0; i < randomTileOrder.size(); i++) {
+			Tile currTile = this.tiles.get(randomTileOrder.get(i));
+			for (Integer rVal : rollValues) {
+				if ((rollFreqs.get(rVal) > 0) && (!(currTile.getResourceType().equals(ResourceType.NOTHING)))) {
+					currTile.setRollNumber(rVal);
+					rollFreqs.put(rVal, rollFreqs.get(rVal) - 1);
+					break;
+				}
+			}
+		}
+
+		List<Tile> nothingTiles = getTiles(ResourceType.NOTHING);
+		for (Tile tile : nothingTiles) {
+			tile.setRollNumber(7);
+		}
 	}
 
 	public List<CatanNode> getNodes() {
@@ -195,6 +228,16 @@ public class Board {
 
 	public List<Tile> getTiles() {
 		return tiles;
+	}
+
+	public List<Tile> getTiles(ResourceType rt) {
+		List<Tile> returnTiles = new ArrayList<>();
+		for (Tile tile : this.tiles) {
+			if (tile.getResourceType().equals(rt)) {
+				returnTiles.add(tile);
+			}
+		}
+		return returnTiles;
 	}
 
 	public List<Settlement> getSettlements() {

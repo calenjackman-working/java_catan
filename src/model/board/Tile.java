@@ -47,6 +47,14 @@ public class Tile {
 		this.resourceType = resourceType;
 	}
 
+	public void setRollNumber(Integer rollNumber) {
+		this.rollNumber = rollNumber;
+	}
+
+	public Integer getRollNumber() {
+		return rollNumber;
+	}
+
 	public Integer getRow() {
 		return row;
 	}

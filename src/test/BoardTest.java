@@ -71,6 +71,16 @@ public class BoardTest {
 	}
 
 	@Test
+	public void eachTileHasRollNumber() {
+		for (Tile tile : this.board.getTiles()) {
+			String message = "Tile at row: " + tile.getRow().toString() + " col: " + tile.getRow().toString()
+					+ " has no roll number";
+			Boolean condition = tile.getRollNumber() != null;
+			assertTrue(message, condition);
+		}
+	}
+
+	@Test
 	public void getNodeforValidIndex() {
 		try {
 			board.getNode(6);
