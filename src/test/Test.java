@@ -7,7 +7,7 @@ import org.junit.runner.notification.Failure;
 import org.junit.runners.Suite;
 
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ BoardTest.class, ModeratorTest.class })
+@Suite.SuiteClasses({ BoardTest.class, GameTest.class, PlayerActionTest.class })
 
 public class Test {
 	public static void main(String[] args) {

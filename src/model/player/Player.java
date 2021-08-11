@@ -1,21 +1,23 @@
 package model.player;
 
 import java.util.List;
-import exceptions.IllegalSettlementAdditionException;
+
+import exceptions.IllegalActionException;
 import model.board.Board;
+import model.board.ownable.Road;
 import model.board.ownable.Settlement;
-import model.moderator.playerAction.ActionType;
-import model.moderator.playerAction.PlayerAction;
+import model.player.playerAction.ActionType;
+import model.player.playerAction.PlayerAction;
 
 public class Player {
-	private String playerName;
 	private Board board;
+	private String playerName;
 	private PlayerAction playerAction;
-	private List<Settlement> settlements;
 
 	public Player(Board b, String name) {
 		this.board = b;
 		this.playerName = name;
+		this.playerAction = null;
 	}
 
 	public void setPlayerAction(ActionType at) {
@@ -26,16 +28,8 @@ public class Player {
 		}
 	}
 
-	public void executePlayerAction() {
+	public void executePlayerAction() throws IllegalActionException {
 		playerAction.takeAction(board);
-	}
-
-	public void addSettlement(Settlement s) throws IllegalSettlementAdditionException {
-		if (!(this.settlements.contains(s))) {
-			this.settlements.add(s);
-		} else {
-			throw new IllegalSettlementAdditionException("Player already owns Settlement at " + s.getNode().toString());
-		}
 	}
 
 	public Board getBoard() {
@@ -51,7 +45,11 @@ public class Player {
 	}
 
 	public List<Settlement> getSettlements() {
-		return settlements;
+		return board.getSettlements(this);
+	}
+
+	public List<Road> getRoads() {
+		return board.getRoads(this);
 	}
 
 	@Override

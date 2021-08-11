@@ -3,12 +3,12 @@ package model.board.ownable;
 import model.player.Player;
 
 public abstract class Ownable {
-	private Player owner;
+	protected Player owner;
 	private Integer victoryPoints;
 
-	public Ownable(Player p, Integer vp) {
-		this.owner = p;
-		this.victoryPoints = vp;
+	public Ownable(Player player, Integer victoryPoints) {
+		this.owner = player;
+		this.victoryPoints = victoryPoints;
 	}
 
 	public Player getOwner() {

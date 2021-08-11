@@ -5,7 +5,7 @@ import java.util.List;
 import org.junit.Before;
 import org.junit.Test;
 import model.board.Board;
-import model.board.Node;
+import model.board.CatanNode;
 import model.board.Tile;
 
 public class BoardTest {
@@ -18,14 +18,14 @@ public class BoardTest {
 
 	@Test
 	public void nodeGridCorrectSize() {
-		List<Node> nodes = this.board.getNodes();
+		List<CatanNode> nodes = this.board.getNodes();
 		assertTrue("Nodes not the correct size", nodes.size() == 54);
 	}
 
 	@Test
 	public void eachNodeShouldHaveAdjacentNodes() {
-		List<Node> nodes = this.board.getNodes();
-		for (Node node : nodes) {
+		List<CatanNode> nodes = this.board.getNodes();
+		for (CatanNode node : nodes) {
 			String message = "Node at row: " + node.getRow().toString() + " col: " + node.getRow().toString()
 					+ " has no adjacent nodes";
 			Boolean condition = node.getAdjacentNodes().size() > 0;
@@ -41,7 +41,7 @@ public class BoardTest {
 	}
 
 	@Test
-	public void eachTileHasCorrectNodes() {
+	public void eachTileHasCorrectAmountOfNodes() {
 		List<Tile> boardTiles = this.board.getTiles();
 		for (Tile tile : boardTiles) {
 			String message = "Tile at index: " + boardTiles.indexOf(tile) + " has incorrect amount of nodes";
@@ -52,7 +52,7 @@ public class BoardTest {
 
 	@Test
 	public void eachNodeHasATile() {
-		for (Node node : this.board.getNodes()) {
+		for (CatanNode node : this.board.getNodes()) {
 			String message = "Node at row: " + node.getRow().toString() + " col: " + node.getRow().toString()
 					+ " has no adjacent nodes";
 			Boolean condition = node.getTiles().size() > 0;

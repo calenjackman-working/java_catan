@@ -6,8 +6,9 @@ import model.enums.ResourceType;
 
 public class Tile {
 	private Integer row, column;
-	private List<Node> nodes;
+	private List<CatanNode> nodes;
 	private ResourceType resourceType;
+	private Integer rollNumber;
 
 	public Tile(Integer row, Integer column) {
 		this.row = row;
@@ -16,16 +17,11 @@ public class Tile {
 		this.resourceType = null;
 	}
 
-	public Tile(Integer row, Integer column, List<Node> nodes) {
-		this(row, column);
-		this.nodes = nodes;
-	}
-
-	public List<Node> getNodes() {
+	public List<CatanNode> getNodes() {
 		return nodes;
 	}
 
-	public Boolean addNode(Node n) {
+	public Boolean addNode(CatanNode n) {
 		if (this.nodes.contains(n)) {
 			return false;
 		}
@@ -34,7 +30,7 @@ public class Tile {
 		return true;
 	}
 
-	public Boolean removeNode(Node n) {
+	public Boolean removeNode(CatanNode n) {
 		if (!(this.nodes.contains(n))) {
 			return false;
 		}

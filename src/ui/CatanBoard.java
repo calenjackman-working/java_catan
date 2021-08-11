@@ -9,22 +9,22 @@ import java.awt.geom.Path2D;
 import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Timer;
-import javax.swing.JButton;
+
 import javax.swing.JPanel;
+
 import model.Game;
-import model.board.Node;
+import model.board.CatanNode;
 import model.board.Tile;
 import model.enums.ResourceType;
-import model.moderator.Moderator;
 import model.player.Player;
 
 public class CatanBoard extends JPanel {
 	private Game game;
-	private Timer timer;
+	private Thread thread;
+	private Animate animate;
+	private CatanWindow catanWindow;
 
-	private final int INITIAL_DELAY = 100;
-	private final int PERIOD_INTERVAL = 25;
+	private CatanEventListener catanEventListener;
 
 	public CatanBoard(CatanWindow window) {
 		this(window, new Game(null), null);
@@ -38,10 +38,11 @@ public class CatanBoard extends JPanel {
 		super.setBackground(Color.LIGHT_GRAY);
 		// this.addActionListener(new ClickListener());
 
-		this.timer = new Timer();
-		timer.scheduleAtFixedRate(new ScheduleTask(), INITIAL_DELAY, PERIOD_INTERVAL);
-
+		this.catanWindow = window;
 		this.game = (game == null) ? new Game(playerList) : game;
+		this.catanEventListener = new CatanEventListener(this);
+		addKeyListener(this.catanEventListener);
+		setFocusable(true);
 	}
 
 	@Override
@@ -74,7 +75,7 @@ public class CatanBoard extends JPanel {
 
 		Path2D.Double path = new Path2D.Double();
 
-		for (Node node : tile.getNodes()) {
+		for (CatanNode node : tile.getNodes()) {
 			Double yDev = node.getRow() * yUnits;
 			Double xDev = node.getColumn() * xUnits;
 
@@ -85,7 +86,7 @@ public class CatanBoard extends JPanel {
 			}
 		}
 
-		Node topNode = tile.getNodes().get(0);
+		CatanNode topNode = tile.getNodes().get(0);
 		Double centerXDev = startCoord.getX() + (topNode.getColumn() * xUnits);
 		Double centerYDev = startCoord.getX() + ((topNode.getRow() + 2) * yUnits);
 		Point2D.Double centerOfTile = new Point2D.Double(centerXDev, centerYDev);
@@ -119,5 +120,29 @@ public class CatanBoard extends JPanel {
 		temp.put(ResourceType.NOTHING, Color.decode("#e2be7b"));
 
 		return temp;
+	}
+
+	public Thread getThread() {
+		return thread;
+	}
+
+	public Animate getAnimate() {
+		return animate;
+	}
+
+	public CatanWindow getCatanWindow() {
+		return catanWindow;
+	}
+
+	public void setThread(Thread thread) {
+		this.thread = thread;
+	}
+
+	public void setAnimate(Animate animate) {
+		this.animate = animate;
+	}
+
+	public void update() {
+		this.repaint();
 	}
 }

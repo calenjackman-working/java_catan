@@ -6,10 +6,14 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
+
+import model.board.ownable.Road;
+import model.board.ownable.Settlement;
 import model.enums.ResourceType;
+import model.player.Player;
 
 public class Board {
-	private List<Node> nodes;
+	private List<CatanNode> nodes;
 	private List<Tile> tiles;
 
 	public Board() {
@@ -38,7 +42,7 @@ public class Board {
 			Integer colCursor = startCol;
 			if (!(emptyRow)) {
 				for (int i = 0; i < nodesInRow; i++) {
-					this.nodes.add(new Node(currentRow, colCursor));
+					this.nodes.add(new CatanNode(currentRow, colCursor));
 					colCursor += 2;
 				}
 
@@ -69,21 +73,21 @@ public class Board {
 	}
 
 	private void assignNodeChildren() {
-		for (Node node : this.nodes) {
+		for (CatanNode node : this.nodes) {
 			Integer nodeRow = node.getRow();
 			Integer nodeCol = node.getColumn();
 
-			Node above = getNode(nodeRow - 2, nodeCol);
-			Node below = getNode(nodeRow + 2, nodeCol);
-			Node topLeft = getNode(nodeRow - 1, nodeCol - 1);
-			Node topRight = getNode(nodeRow - 1, nodeCol + 1);
-			Node botLeft = getNode(nodeRow + 1, nodeCol - 1);
-			Node botRight = getNode(nodeRow + 1, nodeCol + 1);
+			CatanNode above = getNode(nodeRow - 2, nodeCol);
+			CatanNode below = getNode(nodeRow + 2, nodeCol);
+			CatanNode topLeft = getNode(nodeRow - 1, nodeCol - 1);
+			CatanNode topRight = getNode(nodeRow - 1, nodeCol + 1);
+			CatanNode botLeft = getNode(nodeRow + 1, nodeCol - 1);
+			CatanNode botRight = getNode(nodeRow + 1, nodeCol + 1);
 
-			List<Node> possibleAdjacentNodes = new ArrayList<>();
+			List<CatanNode> possibleAdjacentNodes = new ArrayList<>();
 			possibleAdjacentNodes.addAll(Arrays.asList(above, below, topLeft, topRight, botLeft, botRight));
 
-			for (Node pNode : possibleAdjacentNodes) {
+			for (CatanNode pNode : possibleAdjacentNodes) {
 				if (!(pNode == null)) {
 					node.addAdjacentNode(pNode);
 				}
@@ -93,7 +97,8 @@ public class Board {
 
 	private void populateTiles() {
 		initializeTiles();
-		assignTilesToResource();
+		assignResources();
+		assignRollNumber();
 	}
 
 	private void initializeTiles() {
@@ -118,7 +123,7 @@ public class Board {
 				currTile.addNode(this.getNode(startRow + 3, colCursor + 1));
 				currTile.addNode(this.getNode(startRow + 1, colCursor + 1));
 
-				for (Node node : currTile.getNodes()) {
+				for (CatanNode node : currTile.getNodes()) {
 					node.addTile(currTile);
 				}
 
@@ -147,7 +152,7 @@ public class Board {
 		} while (startRow <= 12);
 	}
 
-	private void assignTilesToResource() {
+	private void assignResources() {
 		HashMap<ResourceType, Integer> resourceAmounts = initResourceAmounts();
 		List<Integer> randomTileOrder = new ArrayList<>();
 		for (int i = 0; i < 19; i++) {
@@ -168,7 +173,7 @@ public class Board {
 		}
 	}
 
-	public HashMap<ResourceType, Integer> initResourceAmounts() {
+	private HashMap<ResourceType, Integer> initResourceAmounts() {
 		HashMap<ResourceType, Integer> temp = new HashMap<>();
 		temp.put(ResourceType.LUMBER, 4);
 		temp.put(ResourceType.GRAIN, 4);
@@ -180,12 +185,68 @@ public class Board {
 		return temp;
 	}
 
-	public List<Node> getNodes() {
+	private void assignRollNumber() {
+		return;
+	}
+
+	public List<CatanNode> getNodes() {
 		return nodes;
 	}
 
-	public Node getNode(Integer row, Integer column) {
-		for (Node node : this.nodes) {
+	public List<Tile> getTiles() {
+		return tiles;
+	}
+
+	public List<Settlement> getSettlements() {
+		List<Settlement> listOfSettlements = new ArrayList<>();
+		for (CatanNode node : this.nodes) {
+			Settlement nodeSettlement = node.getSettlement();
+			if (!(nodeSettlement == null)) {
+				listOfSettlements.add(nodeSettlement);
+			}
+		}
+		return listOfSettlements;
+	}
+
+	public List<Settlement> getSettlements(Player player) {
+		List<Settlement> listOfSettlements = new ArrayList<>();
+		for (CatanNode node : this.nodes) {
+			Settlement nodeSettlement = node.getSettlement();
+			if (!(nodeSettlement == null) && (nodeSettlement.getOwner().equals(player))) {
+				listOfSettlements.add(nodeSettlement);
+			}
+		}
+		return listOfSettlements;
+	}
+
+	public List<Road> getRoads() {
+		List<Road> listOfRoads = new ArrayList<>();
+		for (CatanNode node : this.nodes) {
+			List<Road> nodeRoads = node.getRoads();
+			for (Road road : nodeRoads) {
+				if (!(road == null) && !(listOfRoads.contains(road))) {
+					listOfRoads.add(road);
+				}
+			}
+		}
+		return listOfRoads;
+	}
+
+	public List<Road> getRoads(Player player) {
+		List<Road> listOfRoads = new ArrayList<>();
+		for (CatanNode node : this.nodes) {
+			List<Road> nodeRoads = node.getRoads();
+			for (Road road : nodeRoads) {
+				if (!(road == null) && !(listOfRoads.contains(road)) && (road.getOwner().equals(player))) {
+					listOfRoads.add(road);
+				}
+			}
+		}
+		return listOfRoads;
+	}
+
+	public CatanNode getNode(Integer row, Integer column) {
+		for (CatanNode node : this.nodes) {
 			if ((node.getRow() == row) && (node.getColumn() == column)) {
 				return node;
 			}
@@ -193,15 +254,11 @@ public class Board {
 		return null;
 	}
 
-	public Node getNode(Integer index) throws IndexOutOfBoundsException {
+	public CatanNode getNode(Integer index) throws IndexOutOfBoundsException {
 		try {
 			return this.nodes.get(index);
 		} catch (IndexOutOfBoundsException exception) {
 			throw exception;
 		}
-	}
-
-	public List<Tile> getTiles() {
-		return tiles;
 	}
 }

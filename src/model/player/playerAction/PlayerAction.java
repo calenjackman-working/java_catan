@@ -1,4 +1,4 @@
-package model.moderator.playerAction;
+package model.player.playerAction;
 
 import exceptions.IllegalActionException;
 import model.board.Board;
@@ -14,12 +14,7 @@ public class PlayerAction {
 		this.actionType = at;
 	}
 
-	public Board takeAction(Board b) {
-		try {
-			return actionType.takeAction(b);
-		} catch (IllegalActionException e) {
-			// give user feedback
-			return b;
-		}
+	public void takeAction(Board b) throws IllegalActionException {
+		actionType.takeAction(b);
 	}
 }
