@@ -7,8 +7,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import model.board.ownable.Road;
-import model.board.ownable.Settlement;
+import model.board.pieces.Robber;
+import model.board.pieces.ownable.Road;
+import model.board.pieces.ownable.Settlement;
 import model.enums.ResourceType;
 import model.player.Player;
 
@@ -99,6 +100,7 @@ public class Board {
 		initializeTiles();
 		assignResources();
 		assignRollNumbers();
+		assignNothingValues();
 	}
 
 	private void initializeTiles() {
@@ -215,10 +217,13 @@ public class Board {
 				}
 			}
 		}
+	}
 
+	private void assignNothingValues() {
 		List<Tile> nothingTiles = getTiles(ResourceType.NOTHING);
 		for (Tile tile : nothingTiles) {
 			tile.setRollNumber(7);
+			tile.setRobber(new Robber(tile));
 		}
 	}
 
@@ -298,10 +303,6 @@ public class Board {
 	}
 
 	public CatanNode getNode(Integer index) throws IndexOutOfBoundsException {
-		try {
-			return this.nodes.get(index);
-		} catch (IndexOutOfBoundsException exception) {
-			throw exception;
-		}
+		return this.nodes.get(index);
 	}
 }

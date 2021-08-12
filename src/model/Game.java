@@ -95,12 +95,8 @@ public class Game {
 
 	public void removeAllPlayers(List<String> playerNames)
 			throws PlayerDoesNotExistException, NoPlayersInGameException {
-		try {
-			for (String name : playerNames) {
-				removePlayer(name);
-			}
-		} catch (PlayerDoesNotExistException | NoPlayersInGameException e) {
-			throw e;
+		for (String name : playerNames) {
+			removePlayer(name);
 		}
 	}
 

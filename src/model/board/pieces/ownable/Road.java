@@ -1,4 +1,4 @@
-package model.board.ownable;
+package model.board.pieces.ownable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

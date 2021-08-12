@@ -1,4 +1,4 @@
-package model.board.ownable;
+package model.board.pieces.ownable;
 
 import model.board.CatanNode;
 import model.enums.SettlementStage;

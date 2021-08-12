@@ -3,8 +3,8 @@ package model.board;
 import java.util.ArrayList;
 import java.util.List;
 import exceptions.IllegalSettlementAdditionException;
-import model.board.ownable.Road;
-import model.board.ownable.Settlement;
+import model.board.pieces.ownable.Road;
+import model.board.pieces.ownable.Settlement;
 
 public class CatanNode {
 	private Integer row, column;

@@ -25,7 +25,7 @@ public class CatanBoard extends JPanel {
 	private Animate animate;
 	private CatanWindow catanWindow;
 
-	private CatanEventListener catanEventListener;
+	// private CatanEventListener catanEventListener;
 
 	public CatanBoard(CatanWindow window) {
 		this(window, new Game(null), null);
@@ -41,8 +41,17 @@ public class CatanBoard extends JPanel {
 
 		this.catanWindow = window;
 		this.game = (game == null) ? new Game(playerList) : game;
-		this.catanEventListener = new CatanEventListener(this);
-		addKeyListener(this.catanEventListener);
+
+		// TODO - implement GUI
+		// this.catanEventListener = new CatanEventListener(this);
+		// addKeyListener(this.catanEventListener);
+
+		// the below lines can be deleted once full GUI is implemented for mouse
+		// clicking interaction with Catan board
+		this.setAnimate(new Animate(this));
+		this.setThread(new Thread(this.getAnimate()));
+		this.getThread().start();
+
 		setFocusable(true);
 	}
 
@@ -91,7 +100,6 @@ public class CatanBoard extends JPanel {
 		Double centerXDev = startCoord.getX() + (topNode.getColumn() * xUnits);
 		Double centerYDev = startCoord.getX() + ((topNode.getRow() + 2) * yUnits);
 		Point2D.Double centerOfTile = new Point2D.Double(centerXDev, centerYDev);
-		String tileResource = tile.getResourceType().name();
 		String tileRollNumber = tile.getRollNumber().toString();
 
 		path.closePath();

@@ -1,7 +1,7 @@
 package ui;
 
-public class App {
-	public App() {
+public class Catan {
+	public Catan() {
 		super();
 	}
 

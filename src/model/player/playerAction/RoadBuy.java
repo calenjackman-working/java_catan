@@ -7,7 +7,7 @@ import exceptions.IllegalActionException;
 import exceptions.IllegalRoadAdditionException;
 import model.board.Board;
 import model.board.CatanNode;
-import model.board.ownable.Road;
+import model.board.pieces.ownable.Road;
 import model.enums.GamePhase;
 
 public class RoadBuy implements ActionType {

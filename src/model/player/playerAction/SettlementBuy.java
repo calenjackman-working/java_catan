@@ -7,8 +7,8 @@ import exceptions.IllegalActionException;
 import exceptions.IllegalSettlementAdditionException;
 import model.board.Board;
 import model.board.CatanNode;
-import model.board.ownable.Road;
-import model.board.ownable.Settlement;
+import model.board.pieces.ownable.Road;
+import model.board.pieces.ownable.Settlement;
 
 public class SettlementBuy implements ActionType {
 	private Settlement settlement;

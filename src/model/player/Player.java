@@ -4,8 +4,8 @@ import java.util.List;
 
 import exceptions.IllegalActionException;
 import model.board.Board;
-import model.board.ownable.Road;
-import model.board.ownable.Settlement;
+import model.board.pieces.ownable.Road;
+import model.board.pieces.ownable.Settlement;
 import model.player.playerAction.ActionType;
 import model.player.playerAction.PlayerAction;
 

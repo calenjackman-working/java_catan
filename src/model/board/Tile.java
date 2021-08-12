@@ -2,6 +2,8 @@ package model.board;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import model.board.pieces.Robber;
 import model.enums.ResourceType;
 
 public class Tile {
@@ -9,12 +11,15 @@ public class Tile {
 	private List<CatanNode> nodes;
 	private ResourceType resourceType;
 	private Integer rollNumber;
+	private Robber robber;
 
 	public Tile(Integer row, Integer column) {
 		this.row = row;
 		this.column = column;
 		this.nodes = new ArrayList<>();
 		this.resourceType = null;
+		this.rollNumber = null;
+		this.robber = null;
 	}
 
 	public List<CatanNode> getNodes() {
@@ -61,5 +66,13 @@ public class Tile {
 
 	public Integer getColumn() {
 		return column;
+	}
+
+	public Robber getRobber() {
+		return robber;
+	}
+
+	public void setRobber(Robber robber) {
+		this.robber = robber;
 	}
 }
