@@ -10,13 +10,13 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ BoardTest.class, GameTest.class, PlayerActionTest.class })
 
 public class Test {
-	public static void main(String[] args) {
-		Result result = JUnitCore.runClasses(BoardTest.class);
+    public static void main(String[] args) {
+        Result result = JUnitCore.runClasses(BoardTest.class);
 
-		for (Failure failure : result.getFailures()) {
-			System.out.println(failure.toString());
-		}
+        for (Failure failure : result.getFailures()) {
+            System.out.println(failure.toString());
+        }
 
-		System.out.println(result.wasSuccessful());
-	}
+        System.out.println(result.wasSuccessful());
+    }
 }
