@@ -10,18 +10,26 @@ import exceptions.TooManyPlayersException;
 import model.board.Board;
 import model.enums.GamePhase;
 import model.player.Player;
+import ui.CatanWindow;
+import ui.Gameplay;
 
 public class Game {
 	private Board board;
 	private List<Player> players;
 	private GamePhase gamePhase;
 	private Integer turnNumber;
+	private Gameplay gameplay;
 
 	public Game(List<Player> players) {
 		this.board = new Board();
 		this.players = players == null ? new ArrayList<>() : players;
 		this.gamePhase = GamePhase.SETUP;
 		this.turnNumber = 0;
+	}
+
+	public void play(CatanWindow catanWindow) {
+		this.gameplay = new Gameplay(this, catanWindow);
+		gameplay.start();
 	}
 
 	public Board getBoard() {
@@ -50,11 +58,20 @@ public class Game {
 
 	public Player getPlayer(String name) throws PlayerDoesNotExistException {
 		for (Player player : players) {
-			if (player.getPlayerName() == name) {
+			if (player.getPlayerName().equals(name)) {
 				return player;
 			}
 		}
 		throw new PlayerDoesNotExistException("No player with Name = " + name + " found in this game.");
+	}
+
+	public Player getPlayer(Integer turnNumber) throws PlayerDoesNotExistException {
+		for (Player player : players) {
+			if (player.getTurnNumber().equals(turnNumber)) {
+				return player;
+			}
+		}
+		throw new PlayerDoesNotExistException("No player with TurnNumber = " + turnNumber + " found in this game.");
 	}
 
 	public void addPlayer(String name) throws TooManyPlayersException, PlayerNameTakenException {
@@ -82,7 +99,7 @@ public class Game {
 	public void removePlayer(String name) throws PlayerDoesNotExistException, NoPlayersInGameException {
 		if (this.players.size() != 0) {
 			for (Player player : this.players) {
-				if (player.getPlayerName() == name) {
+				if (player.getPlayerName().equals(name)) {
 					this.players.remove(player);
 					return;
 				}
@@ -106,7 +123,7 @@ public class Game {
 
 	private Boolean playerNameTaken(String name) {
 		for (Player player : players) {
-			if (player.getPlayerName() == name) {
+			if (player.getPlayerName().equals(name)) {
 				return true;
 			}
 		}

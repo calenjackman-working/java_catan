@@ -97,10 +97,18 @@ public class CatanBoard extends JPanel {
 		}
 
 		CatanNode topNode = tile.getNodes().get(0);
+
+		// coord for resource label
 		Double centerXDev = startCoord.getX() + (topNode.getColumn() * xUnits);
 		Double centerYDev = startCoord.getX() + ((topNode.getRow() + 2) * yUnits);
 		Point2D.Double centerOfTile = new Point2D.Double(centerXDev, centerYDev);
-		String tileRollNumber = tile.getRollNumber().toString();
+
+		// coord for tileID label
+		Double topYDev = startCoord.getX() + ((topNode.getRow() + 0.5) * yUnits);
+		Point2D.Double topMiddleOfTile = new Point2D.Double(centerXDev, topYDev);
+
+		String tileRollNumberLabel = "[" + tile.getRollNumber().toString() + "]";
+		String tileIDLabel = "(" + tile.getId().toString() + ")";
 
 		path.closePath();
 		g2D.setColor(tileColor);
@@ -108,16 +116,30 @@ public class CatanBoard extends JPanel {
 		g2D.setColor(Color.black);
 		g2D.draw(path);
 
-		g2D.setFont(new Font(g2D.getFont().getFontName(), Font.BOLD, 20));
+		// g2D.setFont(new Font(g2D.getFont().getFontName(), Font.BOLD, 20));
+		g2D.setFont(new Font("Consolas", Font.BOLD, 20));
 		FontMetrics fMetrics = g2D.getFontMetrics(g2D.getFont());
 
-		Integer sW = fMetrics.stringWidth(tileRollNumber);
+		Integer sW = fMetrics.stringWidth(tileRollNumberLabel);
 		Integer sH = fMetrics.getHeight();
 		Integer xlabelAdjust = sW / 2;
 		Integer yLabelAdjust = sH / 2;
 
-		g2D.drawString(tileRollNumber, (float) centerOfTile.getX() - xlabelAdjust,
+		g2D.drawString(tileRollNumberLabel, (float) centerOfTile.getX() - xlabelAdjust,
 				(float) centerOfTile.getY() + yLabelAdjust);
+
+		// g2D.setFont(new Font(g2D.getFont().getFontName(), Font.PLAIN, 12));
+		g2D.setFont(new Font("Consolas", Font.ITALIC, 12));
+		fMetrics = g2D.getFontMetrics(g2D.getFont());
+		// g2D.setColor(Color.lightGray);
+
+		sW = fMetrics.stringWidth(tileIDLabel);
+		sH = fMetrics.getHeight();
+		xlabelAdjust = sW / 2;
+		yLabelAdjust = sH / 2;
+
+		g2D.drawString(tileIDLabel, (float) centerOfTile.getX() - xlabelAdjust,
+				(float) topMiddleOfTile.getY() + yLabelAdjust);
 	}
 
 	private HashMap<ResourceType, Color> initColorMap() {
@@ -143,6 +165,10 @@ public class CatanBoard extends JPanel {
 
 	public CatanWindow getCatanWindow() {
 		return catanWindow;
+	}
+
+	public Game getGame() {
+		return game;
 	}
 
 	public void setThread(Thread thread) {

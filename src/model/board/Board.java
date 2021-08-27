@@ -109,6 +109,7 @@ public class Board {
 		Integer tilesInRow = 3;
 		Integer tileRow = 0;
 		Integer tileStartCol = 2;
+		Integer tileID = 1;
 
 		Boolean afterMiddleRow = false;
 
@@ -116,7 +117,8 @@ public class Board {
 			Integer colCursor = startCol;
 			Integer tileColCursor = tileStartCol;
 			for (int i = 0; i < tilesInRow; i++) {
-				Tile currTile = new Tile(tileRow, tileColCursor);
+				Tile currTile = new Tile(tileID, tileRow, tileColCursor);
+				tileID++;
 
 				currTile.addNode(this.getNode(startRow + 0, colCursor + 0));
 				currTile.addNode(this.getNode(startRow + 1, colCursor - 1));

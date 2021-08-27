@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import model.board.CatanNode;
+import model.enums.ResourceType;
 import model.player.Player;
 
 public class Road extends Ownable {
@@ -17,5 +18,14 @@ public class Road extends Ownable {
 
 	public List<CatanNode> getNodes() {
 		return nodes;
+	}
+
+	@Override
+	protected void setItemCost() {
+		this.cost.put(ResourceType.BRICK, 1);
+		this.cost.put(ResourceType.LUMBER, 1);
+		this.cost.put(ResourceType.ORE, 0);
+		this.cost.put(ResourceType.GRAIN, 0);
+		this.cost.put(ResourceType.WOOL, 0);
 	}
 }

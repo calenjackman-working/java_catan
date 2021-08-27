@@ -1,5 +1,7 @@
 package model.player;
 
+import java.awt.Color;
+import java.util.HashMap;
 import java.util.List;
 
 import exceptions.IllegalActionException;
@@ -13,11 +15,15 @@ public class Player {
 	private Board board;
 	private String playerName;
 	private PlayerAction playerAction;
+	private Color playerColor;
+	private Integer turnNumber;
 
 	public Player(Board b, String name) {
 		this.board = b;
 		this.playerName = name;
 		this.playerAction = null;
+		this.playerColor = null;
+		this.turnNumber = null;
 	}
 
 	public void setPlayerAction(ActionType at) {
@@ -44,6 +50,10 @@ public class Player {
 		return playerName;
 	}
 
+	public Color getPlayerColor() {
+		return playerColor;
+	}
+
 	public List<Settlement> getSettlements() {
 		return board.getSettlements(this);
 	}
@@ -52,9 +62,28 @@ public class Player {
 		return board.getRoads(this);
 	}
 
+	public Integer getTurnNumber() {
+		return turnNumber;
+	}
+
+	public void setTurnNumber(Integer turnNumber) {
+		this.turnNumber = turnNumber;
+	}
+
 	@Override
 	public String toString() {
 		String msg = "Name: " + this.playerName;
 		return msg;
+	}
+
+	public void setPlayerColor(String playerColor) {
+		HashMap<String, Color> playerColors = new HashMap<>();
+		playerColors.put("red", Color.red);
+		playerColors.put("orange", Color.orange);
+		playerColors.put("blue", Color.blue);
+		playerColors.put("white", Color.white);
+
+		String lowerPlayerColor = playerColor.toLowerCase();
+		this.playerColor = playerColors.get(lowerPlayerColor);
 	}
 }

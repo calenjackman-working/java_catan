@@ -12,14 +12,16 @@ public class Tile {
 	private ResourceType resourceType;
 	private Integer rollNumber;
 	private Robber robber;
+	private Integer id;
 
-	public Tile(Integer row, Integer column) {
+	public Tile(Integer id, Integer row, Integer column) {
 		this.row = row;
 		this.column = column;
 		this.nodes = new ArrayList<>();
 		this.resourceType = null;
 		this.rollNumber = null;
 		this.robber = null;
+		this.id = id;
 	}
 
 	public List<CatanNode> getNodes() {
@@ -74,5 +76,9 @@ public class Tile {
 
 	public void setRobber(Robber robber) {
 		this.robber = robber;
+	}
+
+	public Integer getId() {
+		return id;
 	}
 }
